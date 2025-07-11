@@ -1,0 +1,29 @@
+import numpy as np
+
+def generate_circular(n=500):
+    radius_inner = 3
+    radius_outer = 6
+    points_per_class = n // 2
+    r_inner = radius_inner * np.sqrt(np.random.rand(points_per_class))
+    theta_inner = 2 * np.pi * np.random.rand(points_per_class)
+    x_inner = r_inner * np.cos(theta_inner)
+    y_inner = r_inner * np.sin(theta_inner)
+    r_outer = radius_outer * np.sqrt(np.random.rand(points_per_class)) + radius_inner + 1
+    theta_outer = 2 * np.pi * np.random.rand(points_per_class)
+    x_outer = r_outer * np.cos(theta_outer)
+    y_outer = r_outer * np.sin(theta_outer)
+    data = np.vstack([
+        np.column_stack([x_inner, y_inner]),
+        np.column_stack([x_outer, y_outer])
+    ])
+    labels = np.array([0]*points_per_class + [1]*points_per_class)
+    return data, labels
+
+def save_data(data, labels, filename="data.txt"):
+    with open(filename, "w") as f:
+        for (x1, x2), y in zip(data, labels):
+            f.write(f"{x1} {x2} {y}\n")
+
+if __name__ == "__main__":
+    data, labels = generate_circular(500)
+    save_data(data, labels)
